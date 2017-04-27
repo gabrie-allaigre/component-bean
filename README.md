@@ -14,7 +14,7 @@ Pour l'utiliser, il faut ajouter dans le 'pom.xml' du projet la dépendance :
     <dependency>
         <groupId>com.talanlabs</groupId>
         <artifactId>component-bean</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
     </dependency>
 </dependencies>
 ```
@@ -46,7 +46,7 @@ Pour utiliser le moteur d'annation, il faut rajouter dans les plugins du pom Mav
         <dependency>
             <groupId>com.talanlabs</groupId>
             <artifactId>component-bean-apt</artifactId>
-            <version>1.1.0</version>
+            <version>1.0.1</version>
         </dependency>
     </dependencies>
 </plugin>

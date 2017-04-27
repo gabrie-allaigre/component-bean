@@ -1,6 +1,7 @@
 package com.talanlabs.component.annotation.test.data;
 
 @com.talanlabs.component.annotation.GeneratedFrom(com.talanlabs.component.annotation.test.data.IUserDto.class)
+@javax.annotation.Generated("com.talanlabs.component.annotation.processor.ComponentBeanProcessor")
 
 public final class UserDtoBuilder {
 

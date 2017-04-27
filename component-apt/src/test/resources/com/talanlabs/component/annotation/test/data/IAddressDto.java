@@ -2,6 +2,7 @@ package com.talanlabs.component.annotation.test.data;
 
 @com.talanlabs.component.annotation.ComponentBean(createBuilder = true, createFields = true)
 @com.talanlabs.component.annotation.GeneratedFrom(com.talanlabs.component.annotation.test.data.IAddress.class)
+@javax.annotation.Generated("com.talanlabs.component.annotation.processor.ComponentBeanProcessor")
 
 public interface IAddressDto extends com.talanlabs.component.IComponent {
 

@@ -3,6 +3,7 @@ package com.talanlabs.component.annotation.test.data;
 import com.talanlabs.component.field.*;
 import com.talanlabs.component.helper.*;
 @com.talanlabs.component.annotation.GeneratedFrom(com.talanlabs.component.annotation.test.data.IUser.class)
+@javax.annotation.Generated("com.talanlabs.component.annotation.processor.ComponentBeanProcessor")
 
 public final class UserFields {
 

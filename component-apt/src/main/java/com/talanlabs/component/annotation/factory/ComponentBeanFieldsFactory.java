@@ -54,6 +54,7 @@ public final class ComponentBeanFieldsFactory {
             writer.println("import com.talanlabs.component.helper.*;");
 
             writer.println("@com.talanlabs.component.annotation.GeneratedFrom({0}.class)", reflection.rawTypeToString(typeElement.asType(), '.'));
+            writer.println("@javax.annotation.Generated(\"com.talanlabs.component.annotation.processor.ComponentBeanProcessor\")");
 
             writer.generateClassHeader(dtoSimpleName, null, Arrays.asList(Modifier.PUBLIC, Modifier.FINAL));
             writer.println();

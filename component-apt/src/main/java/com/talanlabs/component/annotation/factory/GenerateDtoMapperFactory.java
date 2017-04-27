@@ -17,11 +17,7 @@ import javax.lang.model.type.TypeVariable;
 import java.io.Writer;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public final class GenerateDtoMapperFactory {
 
@@ -53,7 +49,7 @@ public final class GenerateDtoMapperFactory {
             }
 
             writer.println("@com.talanlabs.component.annotation.GeneratedFrom({0}.class)", reflection.rawTypeToString(typeElement.asType(), '.'));
-
+            writer.println("@javax.annotation.Generated(\"com.talanlabs.component.annotation.processor.ComponentBeanProcessor\")");
             writer.generateClassHeader(dtoSimpleName, null, Arrays.asList(Modifier.PUBLIC, Modifier.FINAL));
             writer.println();
             writer.println();

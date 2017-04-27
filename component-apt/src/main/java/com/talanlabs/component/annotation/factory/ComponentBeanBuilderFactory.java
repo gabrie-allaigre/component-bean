@@ -16,11 +16,7 @@ import javax.lang.model.type.TypeMirror;
 import java.io.Writer;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public final class ComponentBeanBuilderFactory {
@@ -64,7 +60,7 @@ public final class ComponentBeanBuilderFactory {
             boolean useGeneric = StringUtils.isNotEmpty(genericString);
 
             writer.println("@com.talanlabs.component.annotation.GeneratedFrom({0}.class)", reflection.rawTypeToString(typeElement.asType(), '.'));
-
+            writer.println("@javax.annotation.Generated(\"com.talanlabs.component.annotation.processor.ComponentBeanProcessor\")");
             writer.generateClassHeader(dtoSimpleName + globalGenericString, null, Arrays.asList(Modifier.PUBLIC, Modifier.FINAL));
             writer.println();
             writer.println();
