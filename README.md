@@ -1,13 +1,13 @@
-Les IComponent permettent :
+IComponent allows:
 
-- Simplifier la création de Bean Java
-- Pas besoin d'ecrire le hashcode, equals, toString et la serialisation
-- Des methodes pour accéder plus facilement aux propriétés
-- Ils permetent de faire de l'héritage multiple.
-- Création automatique d'un Builder et de la liste des champs
-- Création de Dto et du mapper
+- Simplify the creation of Java Bean
+- No need to write hashcode, equals, toString and serialization
+- Methods for easier access to properties
+- They make it possible to make multiple inheritance.
+- Automatic creation of a Builder and the list of fields
+- Creation of Dto and the mapper
 
-Pour l'utiliser, il faut ajouter dans le 'pom.xml' du projet la dépendance :
+To use it, add the dependency in the 'pom.xml' of the project:
 
 ```xml
 <dependencies>
@@ -19,9 +19,9 @@ Pour l'utiliser, il faut ajouter dans le 'pom.xml' du projet la dépendance :
 </dependencies>
 ```
 
-# Moteur d'annotation
+# Annotation Engine
 
-Pour utiliser le moteur d'annation, il faut rajouter dans les plugins du pom Maven :
+To use the annation engine, you must add in the plugins of the Maven pom:
 
 ```xml
 <plugin>
@@ -52,9 +52,9 @@ Pour utiliser le moteur d'annation, il faut rajouter dans les plugins du pom Mav
 </plugin>
 ```
 
-# La base
+# The base
 
-Créer une interface ICountry qui implémente la class IComponent :
+Create an ICountry interface that implements the class IComponent:
     
 ```java
 @ComponentBean
@@ -63,9 +63,9 @@ public interface ICountry extends IComponent {
 }
 ```
 
-On verra par la suite le role de l'annonation @ComponentBean
+We will see later the role of the announcement @ComponentBean
 
-Ensuite on peut rajouter les getter et setter d'un champs 'code' et un champs 'meaning' :
+Then we can add the getter and setter of a field 'code' and a field 'meaning':
 
 ```java
 @ComponentBean
@@ -82,7 +82,7 @@ public interface ICountry extends IComponent {
 }
 ```
 
-Maintenant nous pouvons créer une class Main, qui créera une instance et remplira les champs :
+Now we can create a Main class, which will create an instance and fill in the fields:
 
 ```java
 ICountry country = ComponentFactory.getInstance().createInstance(ICountry.class);
@@ -91,14 +91,14 @@ country.setMeaning("France");
 System.out.println(country);
 ```
 
-Ou grâce à l'annotation @ComponentBean, une classe builder a été créée.
+Or with the @ComponentBean annotation, a builder class has been created.
 
 ```java
 ICountry country = CountryBuilder.newBuilder().code("FRA").meaning("France").build();
 System.out.println(country);
 ```
 
-Le hashcode et le equals sont gérés automatiquement en rajoutant l'annotation @EqualsKey devant le getter.
+The hashcode and the equals are automatically managed by adding the annotation @EqualsKey in front of the getter.
 
 ```java
 @ComponentBean
@@ -124,9 +124,9 @@ System.out.println(country1.equals(country2)); // true
 System.out.println(country1.equals(country3)); // false
 ```
 
-Vous pouvez ajouter plusieurs @EqualsKey pour avoir des clefs multiples. Il contient un paramètre `nullEquals`, par défaut il est à `true`, il permet d'accepter ou pas la comparaison `null == null`.
+You can add multiple @EqualsKey to have multiple keys. It contains a parameter `nullEquals`, by default it is` true`, it allows to accept or not the comparison `null == null`.
 
-On peut rajouter de l'héritage multiple, cela permet d'ajouter des champs facilement :
+We can add multiple inheritance, this allows to add fields easily:
 
 ```java
 @ComponentBean
@@ -134,9 +134,9 @@ public interface ICountry extends IGeolocalisation, INommage, IComponent {
     ...
 ```
 
-L'annotation @Computed permet de créer une methode calculé. L'annotation prend une class en paramètre. Celle-ci sera instancié qu'une fois.
-Vous pouvez changer la façon de l'instancier en changer ComponentFactory.getInstance().setComputedFactory
-elle peut prendre des paramètres. Si la méthode commence par get sera considéré comme un getter et recherchera un setter. Elle se proposé dans la liste des properties.
+The @Computed annotation is used to create a calculated method. The annotation takes a class in parameter. It will be instantiated only once.
+You can change the way you instantiate it by changing ComponentFactory.getInstance (). SetComputedFactory
+It can take parameters. If the method starts with get will be considered as a getter and will look for a setter. It is proposed in the list of properties.
 
 ```java
 @ComponentBean
@@ -160,7 +160,7 @@ public interface ICountry extends IComponent {
 }
 ```
 
-La class Computed, doit contenir la même methode, même nom, même type de retour. En premier paramètre la class d'origine et ensuite les paramètres de la méthode à calculer.
+The Computed class must contain the same method, same name, same return type. In first parameter the class of origin and then the parameters of the method to be computed.
 
 ```java
 public class CountryComputed {
@@ -184,7 +184,7 @@ System.out.println(country.total(" - "));
 
 # Default Java 8
 
-Au lieu d'utiliser Computed, il est possible de faire des méthodes default
+Instead of using Computed, it is possible to do default methods
 
 ```java
 @ComponentBean
@@ -210,9 +210,9 @@ public interface ICountry extends IComponent {
 }
 ```
 
-# Accesseurs
+# Accessors
 
-Pour lire une valeur d'une propriété vous pouvez soit utiliser le getter qui correspond, soit straightGetProperty ou soit straightGetProperties
+To read a value from a property you can either use the getter that matches either straightGetProperty or straightGetProperties
 
 ```java
 System.out.println(country.getCode());
@@ -220,14 +220,14 @@ System.out.println(country.straightGetProperty("code"));
 System.out.println(country.straightGetProperties().get("code"));
 ```
 
-Pour ne pas utiliser les String pour le nom des propriétés, l'annotation @ComponentBean créée une class Fields
+To avoid using String for property names, the @ComponentBean annotation creates a Class Fields
 
 ```java
 System.out.println(country.straightGetProperty(CountryFields.code().name()));
 System.out.println(country.straightGetProperty(CountryFields.code));
 ```
 
-Si vous avez une classe ICity qui contient un ICountry :
+If you have an ICity class that contains an ICountry:
 
 ```java
 @ComponentBean
@@ -243,14 +243,14 @@ public interface ICity extends IComponent {
 }
 ```
 
-A partir de CityFields vous pouvez obtenir le code du ICountry
+From CityFields you can get the ICountry code
 
 ```java
 System.out.println(CityFields.country().dot().code().name()); // "country.code"
 ComponentHelper.getValue(city, CityFields.country().dot().code().name());
 ```
 
-Pour écrire une valeur
+To write a value
 
 ```java
 country.setCode("FRA");
@@ -260,16 +260,16 @@ map.put(CountryFields.code().name(), "FRA");
 country.straightSetProperties(map);
 ```
 
-Connaitre la liste des propriétés et leur type
+Know the list of properties and their type
 
 ```java
 System.out.println(country.straightGetPropertyNames());
 System.out.println(country.straightGetPropertyClass(CountryFields.code().name()));
 ```
 
-**La liste des propriétées contient tous les getter (normal, default ou computed)**
+**The list of properties contains all getter (normal, default or computed)**
 
-On peut aussi utiliser le ComponentDescriptor à partir de la classe :
+You can also use the ComponentDescriptor from the class:
 
 ```java
 System.out.println(ComponentFactory.getInstance().isComponentType(country)); // true
@@ -278,7 +278,7 @@ ComponentDescriptor cd = ComponentFactory.getInstance().getDescriptor(ICountry.c
 ComponentDescriptor cd = ComponentFactory.getInstance().getDescriptor(country);
 ```
 
-A partir du ComponentDescriptor on peut avoir accés à toutes les propriétées.
+From the ComponentDescriptor one can have access to all the properties.
 
 ```java
 cd.getPropertyDescriptors();
@@ -287,193 +287,40 @@ cd.getPropertyDescriptor(CityFields.country);
 
 # ToStringFactory
 
-Le `toString` des Component peuvent être modifié à partir de ToStringFactory :
+The `toString` of Component can be changed from ToStringFactory:
 
 ```java
 ComponentFactory.setInstance(new ComponentFactory(ComponentFactoryConfigurationBuilder.newBuilder().toStringFactory(IToStringFactory.simple()).build()));
 ```
 
-Il existe 3 types da factory par défaut :
+There are 3 default factory types:
 
 | Class  | Usage | Description  |
 |---|---|---|
-| `SimpleToStringFactory` | `IToStringFactory.simple()` | N'affiche que le nom du Component et son hashcode |
-| `CompleteToStringFactory` | `IToStringFactory.complete()` | Par défaut affiche une ligne avec le nom du Component, son hashcode et tous les champs, dans l'ordre les EqualsKey puis par ordre alphabétique |
-| `CompleteToStringFactory` | `new CompleteToStringFactory(...)` | Permet de plus personaliser le Complete : caché le Header, multiligne, cacher les valeurs null, changer l'ordre d'affichage des champs, inclure/exclure des champs... |
-| `ClassToStringFactory` | `new ClassToStringFactory(defaultToStringFactory)` | Permet de spécifier le toString selon le Component : `classToStringFactory.put(IMonComponent.class,monToStringFactory)` |
+| `SimpleToStringFactory` | `IToStringFactory.simple()` | Displays only the name of the Component and its hashcode |
+| `CompleteToStringFactory` | `IToStringFactory.complete()` | By default displays a line with the name of the Component, its hashcode and all the fields, in order the EqualsKey then in alphabetical order |
+| `CompleteToStringFactory` | `new CompleteToStringFactory(...)` | Allows to customize the Complete: hidden the Header, multiline, hide the null values, change the order of display of fields, include / exclude fields ... |
+| `ClassToStringFactory` | `new ClassToStringFactory(defaultToStringFactory)` | Allows you to specify the toString according to the Component: `classToStringFactory.put(IMonComponent.class,monToStringFactory)` |
 
-Pour le tri des champs, il est possible de cummuler les tri :
+For the sorting of fields, it is possible to cumulate the sorting:
 
 | Class  | Usage | Description  |
 |---|---|---|
-| Aucune | `IPropertyComparator.natural()` | Les champs sont triés par ordre alphabétique |
-| `EqualsKeyPropertyComparator` | `IPropertyComparator.equalsKey()` | Les champs `@EqualsKey` sont mis en premier |
-| `FirstPropertyComparator` | `IPropertyComparator.first(propertyNames)` | Les champs donnée seront mis en premier |
-| `FirstPropertyComparator` | `IPropertyComparator.first(componentClass)` | Les champs contenues dans le ComponentClass seront mis en premier |
-| `LastPropertyComparator` | `IPropertyComparator.last(propertyNames)` | Les champs donnée seront mis en dernier |
-| `LastPropertyComparator` | `IPropertyComparator.last(componentClass)` | Les champs contenues dans le ComponentClass seront mis en dernier |
-| `NullValuePropertyComparator` | `IPropertyComparator.nullsLast()` | Les champs null sont mis en dernier |
-| `NullValuePropertyComparator` | `IPropertyComparator.nullsFirst()` | Les champs null sont mis en premier |
-| Aucune | `IPropertyComparator.compose(propertyComparators)` | Les champs sont triés par rapport à l'ordre des comparateurs | 
+| None | `IPropertyComparator.natural()` | Fields are sorted alphabetically |
+| `EqualsKeyPropertyComparator` | `IPropertyComparator.equalsKey()` | The `@EqualsKey` fields are first |
+| `FirstPropertyComparator` | `IPropertyComparator.first(propertyNames)` | The given fields will be put first |
+| `FirstPropertyComparator` | `IPropertyComparator.first(componentClass)` | The fields contained in the ComponentClass will be put first |
+| `LastPropertyComparator` | `IPropertyComparator.last(propertyNames)` | The given fields will be set last |
+| `LastPropertyComparator` | `IPropertyComparator.last(componentClass)` | The fields contained in the ComponentClass will be set last |
+| `NullValuePropertyComparator` | `IPropertyComparator.nullsLast()` | Null fields are set last |
+| `NullValuePropertyComparator` | `IPropertyComparator.nullsFirst()` | Null fields are listed first |
+| None | `IPropertyComparator.compose(propertyComparators)` | Fields are sorted according to the order of the comparators | 
 
-Exemple :
+Example:
 
 ```java
-// Dans l'ordre en premier les EqualsKey, "version", et en dernier les champs de ITracable et les valeurs nulles et chaque groupe trié par ordre alphabétique
+// In order first the EqualsKey, "version", and last the fields of ITracable and the null values ​​and each group sorted in alphabetical order
 IPropertyComparator defaultPropertyComparator = IPropertyComparator
                 .compose(IPropertyComparator.equalsKey(), IPropertyComparator.first(EntityFields.version), IPropertyComparator.last(ITracable.class), new NullValuePropertyComparator(),
                         IPropertyComparator.natural());
-```
-
-# Generateur de DTO
-
-Il suffit d'ajouter au Component l'annotation `@GenerateDto`
-
-```java
-@ComponentBean
-@GenerateDto
-public interface ICountry extends IComponent {
-
-    @EqualsKey
-	String getCode();
-
-	void setCode(String code);
-
-	String getMeaning();
-
-	void setMeaning(String meaning);
-
-}
-```
-
-Une class similaire finissant par **Dto** sera crée :
-
-```java
-@ComponentBean
-@GeneratedFrom(ICountry.class)
-public interface ICountryDto extends IComponent {
-
-    @EqualsKey
-	String getCode();
-
-	void setCode(String code);
-
-	String getMeaning();
-
-	void setMeaning(String meaning);
-
-}
-```
-
-Il est possible d'inclure ou d'exclure des champs, d'inclure ou d'exclure des interfaces
-
-```java
-@ComponentBean
-@GenerateDto(includeFields = { CountryFields.code }, excludeExtends = { TracableFields.CLASS_NAME })
-public interface ICountry extends ITracable, IComponent {
-
-    @EqualsKey
-	String getCode();
-
-	void setCode(String code);
-
-	String getMeaning();
-
-	void setMeaning(String meaning);
-
-}
-```
-
-Et la classe créée :
-
-```java
-@ComponentBean
-@GeneratedFrom(ICountry.class)
-public interface ICountryDto extends IComponent {
-
-    @EqualsKey
-	String getCode();
-
-	void setCode(String code);
-
-}
-```
-
-A partir d'un component, il est possible de définir plusieurs Dto avec des noms différents
-
-```java
-@ComponentBean
-@GenerateDto
-@GenerateDto(name = "SimpleCoutryDto", includeFields = { CountryFields.code }, excludeExtends = { TracableFields.CLASS_NAME })
-public interface ICountry extends ITracable, IComponent {
-...
-```
-
-ou
-
-```java
-@ComponentBean
-@GenerateDtos({ @GenerateDtos(), @GenerateDto(name = "ISimpleCoutryDto", includeFields = { CountryFields.code }, excludeExtends = { TracableFields.CLASS_NAME }) })
-public interface ICountry extends ITracable, IComponent {
-...
-```
-
-Dans ce cas 2 nouvelles classes seront créées :
-
-```java
-@ComponentBean
-@GeneratedFrom(ICountry.class)
-public interface ICountryDto extends ITracable, IComponent {
-...
-```
-
-```java
-@ComponentBean
-@GeneratedFrom(ICountry.class)
-public interface ISimpleCoutryDto extends IComponent {
-...
-```
-
-Si dans un component vous faites référence à un autre component, il sera lui aussi transformé en Dto si le component le permet
-
-```java
-ICountry getCountry();
-
-void setCountry(ICountry country);
-```
-
-La nouvelle classe créée sera :
-
-```java
-ICountryDto getCountry();
-
-void setCountry(ICountryDto country);
-```
-
-Cela fonctionne aussi pour toute les classes génériques (List<>, Map<>, etc).
-
-Une classe Mapper est générée pour passer du component au Dto et inversement.
-
-```java
-ICountry countryResult = CountryMapper.toCountry(countryDto);
-ICountryDto countryDtoResult = CountryMapper.toCountryDto(country);
-ISimpleCountryDto simpleCountryDtoResult = CountryMapper.toSimpleCountryDto(country);
-```
-
-# Mapper
-
-La classe `ComponentMapper` permet de faire des conversions sur les components.
-
-- Soit d'un Component à autre Component
-
-```java
-ICountryDto countryDtoResult = ComponentMapper.getInstance().toComponent(country, ICountryDto.class);
-ICountry countryResult = ComponentMapper.getInstance().toComponent(countryDto, ICountry.class);
-```
-
-- Soit d'un Bean à un Component et inversement
-
-```java
-ICountry countryResult = ComponentMapper.getInstance().toComponent(countryBean, ICountry.class);
-CountryBean countryBeanResult = ComponentMapper.getInstance().fromComponent(country, CountryBean.class);
 ```
