@@ -1,4 +1,8 @@
-IComponent allows:
+# Component-Bean
+
+## Description
+
+Component-Bean allows:
 
 - Simplify the creation of Java Bean
 - No need to write hashcode, equals, toString and serialization
@@ -8,6 +12,8 @@ IComponent allows:
 - Creation of Dto and the mapper
 
 To use it, add the dependency in the 'pom.xml' of the project:
+
+## Usage
 
 ```xml
 <dependencies>
@@ -19,7 +25,7 @@ To use it, add the dependency in the 'pom.xml' of the project:
 </dependencies>
 ```
 
-# Annotation Engine
+## Annotation Engine
 
 To use the annation engine, you must add in the plugins of the Maven pom:
 
